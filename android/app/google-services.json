@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "165595934478",
+    "project_id": "testchat-b78fd",
+    "storage_bucket": "testchat-b78fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165595934478:android:04cca87a455707cbdc315f",
+        "android_client_info": {
+          "package_name": "com.example.testchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIdP0SFaWhwAWdhT2giql3y3G8pmmNUS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
