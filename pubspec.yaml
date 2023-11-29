@@ -1,18 +1,21 @@
 name: testchat
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
   cloud_firestore: ^4.13.0
   cupertino_icons: ^1.0.6
   firebase_auth: ^4.13.0
   firebase_core: ^2.22.0
+  firebase_storage: ^11.5.1
   flutter:
     sdk: flutter
+  image_picker: ^1.0.4
+  lottie: ^2.7.0
   shared_preferences: ^2.2.2
 
 dev_dependencies:

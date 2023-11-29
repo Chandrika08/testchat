@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:testchat/helper/helper_function.dart';
 import 'package:testchat/pages/auth/login_page.dart';
 import 'package:testchat/pages/home_page.dart';
+import 'package:testchat/pages/success_register.dart';
 import 'package:testchat/service/auth_service.dart';
+import 'package:testchat/service/database_service.dart';
 import 'package:testchat/widgets/widgets.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -19,6 +23,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
+  bool _isPasswordValid = true;
+  bool _isEmailValid = true;
   String fullName = "";
   AuthService authService = AuthService();
   @override
@@ -86,12 +92,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
 
                           // check tha validation
-                          validator: (val) {
-                            return RegExp(
-                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(val!)
-                                ? null
-                                : "Please enter a valid email";
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                !value.contains('iiitdwd.ac.in')) {
+                              _isEmailValid = false;
+                              return 'Invalid email address';
+                            }
+                            _isEmailValid = true;
+                            return null;
                           },
                         ),
                         const SizedBox(height: 15),
@@ -103,12 +112,19 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Icons.lock,
                                 color: Theme.of(context).primaryColor,
                               )),
-                          validator: (val) {
-                            if (val!.length < 6) {
-                              return "Password must be at least 6 characters";
-                            } else {
-                              return null;
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                !RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$')
+                                    .hasMatch(value)) {
+                              _isPasswordValid = false;
+                              return 'Password must contain the following:\n'
+                                  '- At least one Capital Letter\n'
+                                  '- At least one Special Character\n'
+                                  '- At least one Number';
                             }
+                            _isPasswordValid = true;
+                            return null;
                           },
                           onChanged: (val) {
                             setState(() {
@@ -168,22 +184,41 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         _isLoading = true;
       });
+
       await authService
           .registerUserWithEmailandPassword(fullName, email, password)
-          .then((value) async {
-        if (value == true) {
-          // saving the shared preference state
-          await HelperFunctions.saveUserLoggedInStatus(true);
-          await HelperFunctions.saveUserEmailSF(email);
-          await HelperFunctions.saveUserNameSF(fullName);
-          nextScreenReplace(context, const HomePage());
-        } else {
-          showSnackbar(context, Colors.red, value);
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      });
+          .then(
+        (value) async {
+          if (value == true) {
+            // Fetching user data from Firestore
+            QuerySnapshot snapshot = await DatabaseService(
+                    uid: FirebaseAuth.instance.currentUser!.uid)
+                .gettingUserData(email);
+
+            // Sending email verification link
+            await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+
+            // Saving the shared preference state
+            await HelperFunctions.saveUserLoggedInStatus(true);
+            await HelperFunctions.saveUserEmailSF(email);
+            await HelperFunctions.saveUserNameSF(fullName);
+
+            // Navigate to success screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RegisterSuccess(email: email),
+              ),
+            );
+          } else {
+            // If registration is unsuccessful, show a snackbar
+            showSnackbar(context, Colors.red, value);
+            setState(() {
+              _isLoading = false;
+            });
+          }
+        },
+      );
     }
   }
 }

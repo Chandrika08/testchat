@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
+  bool _isEmailValid = true;
+  bool _isPasswordValid = true;
   bool _isLoading = false;
   AuthService authService = AuthService();
   @override
@@ -57,19 +59,22 @@ class _LoginPageState extends State<LoginPage> {
                                 Icons.email,
                                 color: Theme.of(context).primaryColor,
                               )),
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.none,
                           onChanged: (val) {
                             setState(() {
                               email = val;
                             });
                           },
-
-                          // check tha validation
-                          validator: (val) {
-                            return RegExp(
-                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(val!)
-                                ? null
-                                : "Please enter a valid email";
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                !value.contains('iiitdwd.ac.in')) {
+                              _isEmailValid = false;
+                              return 'Invalid email address';
+                            }
+                            _isEmailValid = true;
+                            return null;
                           },
                         ),
                         const SizedBox(height: 15),
@@ -81,12 +86,17 @@ class _LoginPageState extends State<LoginPage> {
                                 Icons.lock,
                                 color: Theme.of(context).primaryColor,
                               )),
-                          validator: (val) {
-                            if (val!.length < 6) {
-                              return "Password must be at least 6 characters";
-                            } else {
-                              return null;
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                !RegExp(
+                                  r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$',
+                                ).hasMatch(value)) {
+                              _isPasswordValid = false;
+                              return 'Invalid Password';
                             }
+                            _isPasswordValid = true;
+                            return null;
                           },
                           onChanged: (val) {
                             setState(() {
@@ -146,25 +156,44 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _isLoading = true;
       });
-      await authService
-          .loginWithUserNameandPassword(email, password)
-          .then((value) async {
-        if (value == true) {
-          QuerySnapshot snapshot =
-              await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-                  .gettingUserData(email);
-          // saving the values to our shared preferences
-          await HelperFunctions.saveUserLoggedInStatus(true);
-          await HelperFunctions.saveUserEmailSF(email);
-          await HelperFunctions.saveUserNameSF(snapshot.docs[0]['fullName']);
-          nextScreenReplace(context, const HomePage());
-        } else {
-          showSnackbar(context, Colors.red, value);
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      });
+
+      await authService.loginWithUserNameandPassword(email, password).then(
+        (value) async {
+          if (value == true) {
+            // Fetching user data from Firestore
+            QuerySnapshot snapshot = await DatabaseService(
+                    uid: FirebaseAuth.instance.currentUser!.uid)
+                .gettingUserData(email);
+
+            // Checking if the email is verified
+            bool isEmailVerified =
+                FirebaseAuth.instance.currentUser!.emailVerified;
+
+            if (isEmailVerified) {
+              // If email is verified, save user details and navigate to HomePage
+              await HelperFunctions.saveUserLoggedInStatus(true);
+              await HelperFunctions.saveUserEmailSF(email);
+              await HelperFunctions.saveUserNameSF(
+                  snapshot.docs[0]['fullName']);
+              nextScreenReplace(context, const HomePage());
+            } else {
+              // If email is not verified, show a snackbar
+              showSnackbar(context, Colors.red,
+                  'Email address not verified. Please verify your email.');
+            }
+
+            setState(() {
+              _isLoading = false;
+            });
+          } else {
+            // If login is unsuccessful, show a snackbar
+            showSnackbar(context, Colors.red, value);
+            setState(() {
+              _isLoading = false;
+            });
+          }
+        },
+      );
     }
   }
 }
