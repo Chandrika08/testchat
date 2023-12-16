@@ -52,13 +52,13 @@ class _ChatPageState extends State<ChatPage> {
         centerTitle: true,
         elevation: 0,
         title: Text(widget.groupName),
-        backgroundColor: Colors.transparent, // Set a transparent background
+        backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 Color.fromARGB(255, 4, 58, 103),
-                Color.fromARGB(255, 68, 183, 255)
+                Color.fromARGB(255, 68, 183, 255),
               ],
             ),
           ),
@@ -84,6 +84,16 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: Stack(
               children: <Widget>[
+                // Wallpaper
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image:
+                          AssetImage('assets/wallpaper.jpg'), // Adjust the path
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
                 // chat messages here
                 chatMessages(),
               ],
@@ -95,7 +105,7 @@ class _ChatPageState extends State<ChatPage> {
               gradient: LinearGradient(
                 colors: [
                   Color.fromARGB(255, 4, 58, 103),
-                  Color.fromARGB(255, 68, 183, 255)
+                  Color.fromARGB(255, 68, 183, 255),
                 ],
               ),
             ),

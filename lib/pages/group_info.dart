@@ -150,51 +150,54 @@ class _GroupInfoState extends State<GroupInfo> {
     return StreamBuilder(
       stream: members,
       builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data['members'] != null) {
-            if (snapshot.data['members'].length != 0) {
-              return ListView.builder(
-                itemCount: snapshot.data['members'].length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Colors.greenAccent,
-                        child: Text(
-                          getName(snapshot.data['members'][index])
-                              .substring(0, 1)
-                              .toUpperCase(),
-                          style: const TextStyle(
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data['members'] == null) {
+          return Center(child: Text("NO MEMBERS"));
+        } else {
+          return ListView.builder(
+            itemCount: snapshot.data['members'].length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              String userId = snapshot.data['members'][index];
+              return FutureBuilder<String?>(
+                future: DatabaseService().getUserEmail(getId(userId)),
+                builder: (context, AsyncSnapshot<String?> emailSnapshot) {
+                  if (emailSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (emailSnapshot.hasError) {
+                    return Text('Error: ${emailSnapshot.error}');
+                  } else {
+                    String userEmail =
+                        emailSnapshot.data ?? ''; // Handle null case
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 10),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.greenAccent,
+                          child: Text(
+                            getName(userId).substring(0, 1).toUpperCase(),
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
+                        title: Text(getName(userId)),
+                        subtitle: Text(userEmail),
                       ),
-                      title: Text(getName(snapshot.data['members'][index])),
-                      subtitle: Text(getId(snapshot.data['members'][index])),
-                    ),
-                  );
+                    );
+                  }
                 },
               );
-            } else {
-              return const Center(
-                child: Text("NO MEMBERS"),
-              );
-            }
-          } else {
-            return const Center(
-              child: Text("NO MEMBERS"),
-            );
-          }
-        } else {
-          return Center(
-              child: CircularProgressIndicator(
-            color: Theme.of(context).primaryColor,
-          ));
+            },
+          );
         }
       },
     );

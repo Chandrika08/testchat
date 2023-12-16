@@ -73,13 +73,40 @@ class DatabaseService {
   }
 
   // get group members
-  getGroupMembers(groupId) async {
-    return groupCollection.doc(groupId).snapshots();
-  }
 
   // search
   searchByName(String groupName) {
     return groupCollection.where("groupName", isEqualTo: groupName).get();
+  }
+
+  Future<String?> getUserEmail(String userId) async {
+    DocumentSnapshot userSnapshot = await userCollection.doc(userId).get();
+
+    if (userSnapshot.exists) {
+      return userSnapshot.get('email');
+    } else {
+      return null; // Handle the case when user data doesn't exist
+    }
+  }
+
+// Modify the getMembers function to include user emails
+  getGroupMembers(groupId) async {
+    return groupCollection.doc(groupId).snapshots();
+  }
+
+  Future<String?> getLastMessage(String groupId) async {
+    QuerySnapshot messagesSnapshot = await groupCollection
+        .doc(groupId)
+        .collection("messages")
+        .orderBy("time", descending: true)
+        .limit(1)
+        .get();
+
+    if (messagesSnapshot.docs.isNotEmpty) {
+      return messagesSnapshot.docs[0]['message'];
+    } else {
+      return null; // Return null if there are no messages
+    }
   }
 
   // function -> bool

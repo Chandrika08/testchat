@@ -241,7 +241,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Notifications',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.more),
+            icon: Icon(Icons.menu),
             label: 'More',
           ),
         ],
@@ -252,7 +252,13 @@ class _HomePageState extends State<HomePage> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        isAddIconVisible = true;
+        String firstLetter = getFirstLetter(email);
+        if (firstLetter.isNotEmpty && RegExp(r'[0-9]').hasMatch(firstLetter)) {
+          isAddIconVisible = false;
+        } else {
+          isAddIconVisible = true;
+        }
+
         return groupList();
       case 1:
         isAddIconVisible = false;
@@ -376,6 +382,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  String getFirstLetter(String email) {
+    if (email.isNotEmpty && email.startsWith(RegExp(r'[a-zA-Z]'))) {
+      return email.substring(0, 1).toLowerCase();
+    } else {
+      return ''; // Return an empty string if email is empty or doesn't start with an alphabet
+    }
+  }
+
   noGroupWidget() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -398,7 +412,7 @@ class _HomePageState extends State<HomePage> {
             height: 20,
           ),
           const Text(
-            "You've not joined any groups, tap on the add icon to create a group or also search from top search button.",
+            "You've not joined any groups, tap on the add icon to create a group or also search from the top search button.",
             textAlign: TextAlign.center,
           ),
         ],
