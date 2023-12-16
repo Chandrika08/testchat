@@ -53,16 +53,16 @@ class _MessageTileState extends State<MessageTile> {
                   bottomLeft: Radius.circular(15),
                 ),
           gradient: widget.sentByMe
-              ? LinearGradient(
+              ? const LinearGradient(
                   colors: [
-                    Color.fromARGB(255, 2, 134, 15),
-                    Color.fromARGB(255, 68, 255, 109)
+                    Colors.purpleAccent,
+                    Color.fromARGB(174, 0, 0, 0),
                   ],
                 )
-              : LinearGradient(
+              : const LinearGradient(
                   colors: [
-                    Color.fromARGB(255, 68, 183, 255),
-                    Color.fromARGB(255, 4, 58, 103),
+                    Color.fromARGB(255, 128, 128, 0),
+                    Color.fromARGB(172, 15, 14, 14),
                   ],
                 ),
         ),
@@ -89,7 +89,7 @@ class _MessageTileState extends State<MessageTile> {
                     widget.sender.toUpperCase(),
                     textAlign: TextAlign.start,
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       letterSpacing: -0.5,

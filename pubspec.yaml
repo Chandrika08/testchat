@@ -17,6 +17,7 @@ dependencies:
   image_picker: ^1.0.4
   lottie: ^2.7.0
   shared_preferences: ^2.2.2
+  zego_uikit_prebuilt_call: ^3.17.10
 
 dev_dependencies:
   flutter_test:

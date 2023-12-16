@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:testchat/call/call_page.dart';
+import 'package:testchat/call/landing_page.dart';
 import 'package:testchat/helper/helper_function.dart';
 import 'package:testchat/pages/auth/login_page.dart';
 import 'package:testchat/pages/members.dart';
@@ -9,6 +11,7 @@ import 'package:testchat/service/auth_service.dart';
 import 'package:testchat/service/database_service.dart';
 import 'package:testchat/widgets/group_tile.dart';
 import 'package:testchat/widgets/widgets.dart';
+import 'package:testchat/pages/more.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,136 +69,62 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              nextScreen(context, const SearchPage());
-            },
-            icon: const Icon(
-              Icons.search,
-            ),
-          )
-        ],
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Colors.transparent, // Set a transparent background
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 4, 58, 103),
-                Color.fromARGB(255, 68, 183, 255)
-              ],
-            ),
-          ),
-        ),
-        title: const Text(
-          "IIIT DHARWAD",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 27,
-          ),
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 50),
-          children: <Widget>[
-            Icon(
-              Icons.account_circle,
-              size: 150,
-              color: Colors.grey[700],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              userName,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            const Divider(
-              height: 2,
-            ),
-            ListTile(
-              onTap: () {},
-              selectedColor: Theme.of(context).primaryColor,
-              selected: true,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Groups",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            ListTile(
-              onTap: () {
-                nextScreenReplace(
-                    context,
-                    ProfilePage(
-                      userName: userName,
-                      email: email,
-                    ));
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0),
+        child: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {
+                nextScreen(context, const SearchPage());
               },
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Profile",
-                style: TextStyle(color: Colors.black),
+              icon: const Icon(
+                Icons.search,
+                color: Colors.white,
+                size: 30,
               ),
             ),
-            ListTile(
-              onTap: () async {
-                showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Logout"),
-                        content: const Text("Are you sure you want to logout?"),
-                        actions: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(
-                              Icons.cancel,
-                              color: Colors.red,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              await authService.signOut();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginPage()),
-                                  (route) => false);
-                            },
-                            icon: const Icon(
-                              Icons.done,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      );
-                    });
-              },
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text(
-                "Logout",
-                style: TextStyle(color: Colors.black),
-              ),
-            )
           ],
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          title: Text(
+            "CHAT BUDDY",
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                fontStyle: FontStyle.normal),
+          ),
+          flexibleSpace: Stack(
+            children: [
+              Container(
+                height: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 4, 58, 103),
+                      Color.fromARGB(255, 68, 183, 255),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.3),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: _getPage(_currentIndex),
@@ -206,17 +135,17 @@ class _HomePageState extends State<HomePage> {
             popUpDialog(context);
           },
           elevation: 0,
-          backgroundColor: Colors.greenAccent,
+          backgroundColor: Color.fromARGB(255, 30, 34, 82),
           child: const Icon(
             Icons.add,
-            color: Colors.black,
+            color: Colors.white,
             size: 30,
           ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        selectedItemColor: Colors.greenAccent,
+        selectedItemColor: Colors.indigo,
         unselectedItemColor: Colors.black,
         onTap: (index) {
           setState(() {
@@ -233,16 +162,16 @@ class _HomePageState extends State<HomePage> {
             label: 'Members',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Messages',
+            icon: Icon(Icons.call),
+            label: 'Call',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifications',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'More',
+            icon: Icon(Icons.settings_rounded),
+            label: 'Settings',
           ),
         ],
       ),
@@ -252,17 +181,19 @@ class _HomePageState extends State<HomePage> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        String firstLetter = getFirstLetter(email);
-        if (firstLetter.isNotEmpty && RegExp(r'[0-9]').hasMatch(firstLetter)) {
-          isAddIconVisible = false;
-        } else {
-          isAddIconVisible = true;
-        }
-
+        isAddIconVisible = true;
         return groupList();
       case 1:
         isAddIconVisible = false;
-        return MembersPage(); // Navigate to the MembersPage for index 1
+        return MembersPage();
+      case 2:
+        isAddIconVisible = false;
+        return LandingPage();
+      case 4:
+        isAddIconVisible = false;
+        return MorePage(
+            userName: userName,
+            email: email); // Navigate to the MembersPage for index 1
       // You can add logic for other pages here if needed
       default:
         isAddIconVisible = true;
@@ -299,29 +230,28 @@ class _HomePageState extends State<HomePage> {
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.greenAccent),
+                                  borderSide: BorderSide(color: Colors.indigo),
                                   borderRadius: BorderRadius.circular(20)),
                               errorBorder: OutlineInputBorder(
                                   borderSide:
                                       const BorderSide(color: Colors.red),
                                   borderRadius: BorderRadius.circular(20)),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.greenAccent),
+                                  borderSide: BorderSide(color: Colors.indigo),
                                   borderRadius: BorderRadius.circular(20))),
                         ),
                 ],
               ),
               actions: [
-                ElevatedButton(
+                TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  style: ElevatedButton.styleFrom(primary: Colors.greenAccent),
-                  child: const Text("CANCEL"),
+                  style: TextButton.styleFrom(primary: Colors.red),
+                  child:
+                      const Text("CANCEL", style: TextStyle(color: Colors.red)),
                 ),
-                ElevatedButton(
+                TextButton(
                   onPressed: () async {
                     if (groupName != "") {
                       setState(() {
@@ -339,9 +269,10 @@ class _HomePageState extends State<HomePage> {
                           context, Colors.green, "Group created successfully.");
                     }
                   },
-                  style: ElevatedButton.styleFrom(primary: Colors.greenAccent),
-                  child: const Text("CREATE"),
-                )
+                  style: TextButton.styleFrom(primary: Colors.green),
+                  child: const Text("CREATE",
+                      style: TextStyle(color: Colors.green)),
+                ),
               ],
             );
           }));
@@ -382,14 +313,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  String getFirstLetter(String email) {
-    if (email.isNotEmpty && email.startsWith(RegExp(r'[a-zA-Z]'))) {
-      return email.substring(0, 1).toLowerCase();
-    } else {
-      return ''; // Return an empty string if email is empty or doesn't start with an alphabet
-    }
-  }
-
   noGroupWidget() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -412,7 +335,7 @@ class _HomePageState extends State<HomePage> {
             height: 20,
           ),
           const Text(
-            "You've not joined any groups, tap on the add icon to create a group or also search from the top search button.",
+            "You've not joined any groups, tap on the add icon to create a group or also search from top search button.",
             textAlign: TextAlign.center,
           ),
         ],

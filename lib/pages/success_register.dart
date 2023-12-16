@@ -17,7 +17,7 @@ class RegisterSuccess extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 3,
-              child: Lottie.asset('assets/success.json'),
+              child: Lottie.asset('assets/json3.json'),
             ),
             Container(
               width: double.infinity,
@@ -42,14 +42,14 @@ class RegisterSuccess extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 15,
             ),
             // Back to home page
             SizedBox(
               width: 250,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent,
+                  primary: Colors.deepPurple,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

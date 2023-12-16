@@ -48,56 +48,95 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text(
-          "Search",
-          style: TextStyle(
-              fontSize: 27, fontWeight: FontWeight.bold, color: Colors.white),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0),
+        child: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          title: Text(
+            "Search Groups",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 28,
+            ),
+          ),
+          flexibleSpace: Stack(
+            children: [
+              Container(
+                height: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 4, 58, 103),
+                      Color.fromARGB(255, 68, 183, 255),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.3),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: Column(
         children: [
-          Container(
-            color: Theme.of(context).primaryColor,
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: searchController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Search groups....",
-                        hintStyle:
-                            TextStyle(color: Colors.white, fontSize: 16)),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    initiateSearchMethod();
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(40)),
-                    child: const Icon(
-                      Icons.search,
-                      color: Colors.white,
+                    style: const TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      hintText: "Search groups...",
+                      hintStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-                )
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    initiateSearchMethod();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Icon(Icons.search),
+                ),
               ],
             ),
           ),
           isLoading
               ? Center(
                   child: CircularProgressIndicator(
-                      color: Theme.of(context).primaryColor),
+                    color: Theme.of(context).primaryColor,
+                  ),
                 )
               : groupList(),
         ],
@@ -124,17 +163,19 @@ class _SearchPageState extends State<SearchPage> {
 
   groupList() {
     return hasUserSearched
-        ? ListView.builder(
-            shrinkWrap: true,
-            itemCount: searchSnapshot!.docs.length,
-            itemBuilder: (context, index) {
-              return groupTile(
-                userName,
-                searchSnapshot!.docs[index]['groupId'],
-                searchSnapshot!.docs[index]['groupName'],
-                searchSnapshot!.docs[index]['admin'],
-              );
-            },
+        ? Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: searchSnapshot!.docs.length,
+              itemBuilder: (context, index) {
+                return groupTile(
+                  userName,
+                  searchSnapshot!.docs[index]['groupId'],
+                  searchSnapshot!.docs[index]['groupName'],
+                  searchSnapshot!.docs[index]['admin'],
+                );
+              },
+            ),
           )
         : Container();
   }
@@ -152,69 +193,76 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget groupTile(
       String userName, String groupId, String groupName, String admin) {
-    // function to check whether user already exists in group
+    // function to check whether the user already exists in the group
     joinedOrNot(userName, groupId, groupName, admin);
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      leading: CircleAvatar(
-        radius: 30,
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Text(
-          groupName.substring(0, 1).toUpperCase(),
-          style: const TextStyle(color: Colors.white),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
         ),
-      ),
-      title:
-          Text(groupName, style: const TextStyle(fontWeight: FontWeight.w600)),
-      subtitle: Text("Admin: ${getName(admin)}"),
-      trailing: InkWell(
-        onTap: () async {
-          await DatabaseService(uid: user!.uid)
-              .toggleGroupJoin(groupId, userName, groupName);
-          if (isJoined) {
-            setState(() {
-              isJoined = !isJoined;
-            });
-            showSnackbar(context, Colors.green, "Successfully joined he group");
-            Future.delayed(const Duration(seconds: 2), () {
-              nextScreen(
+        child: ListTile(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          leading: CircleAvatar(
+            radius: 30,
+            backgroundColor: Theme.of(context).primaryColor,
+            child: Text(
+              groupName.substring(0, 1).toUpperCase(),
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+          title: Text(
+            groupName,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+          subtitle: Text("Admin: ${getName(admin)}"),
+          trailing: InkWell(
+            onTap: () async {
+              await DatabaseService(uid: user!.uid)
+                  .toggleGroupJoin(groupId, userName, groupName);
+              if (isJoined) {
+                setState(() {
+                  isJoined = !isJoined;
+                });
+                showSnackbar(
                   context,
-                  ChatPage(
+                  Colors.green,
+                  "Successfully joined the group",
+                );
+                Future.delayed(const Duration(seconds: 2), () {
+                  nextScreen(
+                    context,
+                    ChatPage(
                       groupId: groupId,
                       groupName: groupName,
-                      userName: userName));
-            });
-          } else {
-            setState(() {
-              isJoined = !isJoined;
-              showSnackbar(context, Colors.red, "Left the group $groupName");
-            });
-          }
-        },
-        child: isJoined
-            ? Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.black,
-                  border: Border.all(color: Colors.white, width: 1),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: const Text(
-                  "Joined",
-                  style: TextStyle(color: Colors.white),
-                ),
-              )
-            : Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).primaryColor,
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: const Text("Join Now",
-                    style: TextStyle(color: Colors.white)),
+                      userName: userName,
+                    ),
+                  );
+                });
+              } else {
+                setState(() {
+                  isJoined = !isJoined;
+                  showSnackbar(
+                      context, Colors.red, "Left the group $groupName");
+                });
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: isJoined ? Colors.black : Theme.of(context).primaryColor,
+                border: Border.all(color: Colors.white, width: 1),
               ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                isJoined ? "Joined" : "Join Now",
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'package:testchat/helper/helper_function.dart';
 import 'package:testchat/pages/auth/login_page.dart';
 import 'package:testchat/pages/home_page.dart';
@@ -27,41 +26,71 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isEmailValid = true;
   String fullName = "";
   AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(90),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          flexibleSpace: ClipPath(
+            clipper: AppBarClipper(),
+            child: Container(
+              color: Colors.indigo,
+            ),
+          ),
+          title: Text(
+            "CHAT BUDDY",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24, // Adjust the font size as needed
+              // You can also use other TextStyle properties like fontWeight, letterSpacing, etc.
+            ),
+          ),
+          centerTitle: true,
+        ),
+      ),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor))
+                color: Colors.indigo,
+              ),
+            )
           : SingleChildScrollView(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                 child: Form(
                     key: formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        const Text(
-                          "Groupie",
-                          style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold),
+                        Image.asset("assets/download.png"),
+                        const SizedBox(height: 50),
+                        Text(
+                          "Come Chat and Explore IIITian's\nWhere Every Conversation Unveils\nA New Adventure!",
+                          style: TextStyle(fontSize: 22),
+                          textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 10),
-                        const Text(
-                            "Create your account now to chat and explore",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w400)),
-                        Image.asset("assets/register.png"),
+                        const SizedBox(height: 50),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
-                              labelText: "Full Name",
-                              prefixIcon: Icon(
-                                Icons.person,
-                                color: Theme.of(context).primaryColor,
-                              )),
+                            labelText: "Full Name",
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.indigo,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.indigo),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.indigo),
+                            ),
+                          ),
                           onChanged: (val) {
                             setState(() {
                               fullName = val;
@@ -80,18 +109,23 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
-                              labelText: "Email",
-                              prefixIcon: Icon(
-                                Icons.email,
-                                color: Theme.of(context).primaryColor,
-                              )),
+                            labelText: "Email",
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: Colors.indigo,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.indigo),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.indigo),
+                            ),
+                          ),
                           onChanged: (val) {
                             setState(() {
                               email = val;
                             });
                           },
-
-                          // check tha validation
                           validator: (value) {
                             if (value == null ||
                                 value.isEmpty ||
@@ -107,11 +141,18 @@ class _RegisterPageState extends State<RegisterPage> {
                         TextFormField(
                           obscureText: true,
                           decoration: textInputDecoration.copyWith(
-                              labelText: "Password",
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: Theme.of(context).primaryColor,
-                              )),
+                            labelText: "Password",
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: Colors.indigo,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.indigo),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.indigo),
+                            ),
+                          ),
                           validator: (value) {
                             if (value == null ||
                                 value.isEmpty ||
@@ -133,28 +174,60 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         SizedBox(
-                          width: double.infinity,
+                          width: 150,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: Theme.of(context).primaryColor,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30))),
+                              primary:
+                                  Colors.indigo, // Change the color to black
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
                             child: const Text(
                               "Register",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17, // Adjust the font size as needed
+                              ),
                             ),
                             onPressed: () {
                               register();
                             },
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 2.0, // Height of the line
+                              width: 100.0, // Width of the line
+                              color: Colors.grey, // Color of the line
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Text(
+                                'OR',
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Container(
+                              height: 2.0, // Height of the line
+                              width: 100.0, // Width of the line
+                              color: Colors.grey, // Color of the line
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 25,
                         ),
                         Text.rich(TextSpan(
                           text: "Already have an account? ",
@@ -162,7 +235,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.black, fontSize: 14),
                           children: <TextSpan>[
                             TextSpan(
-                                text: "Login now",
+                                text: "Sign In",
                                 style: const TextStyle(
                                     color: Colors.black,
                                     decoration: TextDecoration.underline),
@@ -220,5 +293,23 @@ class _RegisterPageState extends State<RegisterPage> {
         },
       );
     }
+  }
+}
+
+class AppBarClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 40);
+    path.quadraticBezierTo(
+        size.width / 2, size.height, size.width, size.height - 40);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
   }
 }

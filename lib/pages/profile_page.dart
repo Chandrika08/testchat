@@ -1,8 +1,7 @@
-import 'package:testchat/pages/auth/login_page.dart';
+import 'package:flutter/material.dart';
 import 'package:testchat/pages/home_page.dart';
 import 'package:testchat/service/auth_service.dart';
 import 'package:testchat/widgets/widgets.dart';
-import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
   String userName;
@@ -16,156 +15,199 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  bool isEditing = false;
+  TextEditingController fullNameController = TextEditingController();
   AuthService authService = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    fullNameController.text = widget.userName;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            nextScreenReplace(context, HomePage());
+          },
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 4, 58, 103),
+                Color.fromARGB(255, 68, 183, 255),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         elevation: 0,
         title: const Text(
           "Profile",
           style: TextStyle(
-              color: Colors.white, fontSize: 27, fontWeight: FontWeight.bold),
+            color: Colors.white,
+            fontSize: 27,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 50),
-          children: <Widget>[
-            CircleAvatar(
-              radius: 75,
-              backgroundColor: Colors.grey[700],
-              child: Text(
-                widget.userName.isNotEmpty
-                    ? widget.userName[0].toUpperCase()
-                    : '',
-                style:
-                    const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              widget.userName,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            const Divider(
-              height: 2,
-            ),
-            ListTile(
-              onTap: () {
-                nextScreen(context, const HomePage());
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            _buildCard("Email", widget.email, "Email cannot be changed"),
+            SizedBox(height: 20),
+            _buildEditableCard(
+              "Full Name",
+              fullNameController,
+              () {
+                setState(() {
+                  isEditing = !isEditing;
+                });
               },
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Groups",
-                style: TextStyle(color: Colors.black),
-              ),
             ),
-            ListTile(
-              onTap: () {},
-              selected: true,
-              selectedColor: Theme.of(context).primaryColor,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Profile",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            ListTile(
-              onTap: () async {
-                showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Logout"),
-                        content: const Text("Are you sure you want to logout?"),
-                        actions: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(
-                              Icons.cancel,
-                              color: Colors.red,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              await authService.signOut();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginPage()),
-                                  (route) => false);
-                            },
-                            icon: const Icon(
-                              Icons.done,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      );
-                    });
-              },
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text(
-                "Logout",
-                style: TextStyle(color: Colors.black),
-              ),
-            )
           ],
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 170),
+    );
+  }
+
+  Widget _buildCard(String title, String content, String footer) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      elevation: 2,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 75,
-              backgroundColor: Colors.grey[700],
-              child: Text(
-                widget.userName.isNotEmpty
-                    ? widget.userName[0].toUpperCase()
-                    : '',
-                style:
-                    const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+            Text(title, style: TextStyle(fontSize: 17)),
+            SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8),
               ),
+              child: Text(content, style: TextStyle(fontSize: 17)),
             ),
-            const SizedBox(
-              height: 15,
+            SizedBox(height: 20),
+            Text(
+              footer,
+              style: TextStyle(fontSize: 14, color: Colors.grey),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEditableCard(
+    String title,
+    TextEditingController controller,
+    VoidCallback onTap,
+  ) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Full Name", style: TextStyle(fontSize: 17)),
-                Text(widget.userName, style: const TextStyle(fontSize: 17)),
+                Text(title, style: TextStyle(fontSize: 17)),
+                isEditing
+                    ? Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              await authService.updateUsername(controller.text);
+                              setState(() {
+                                widget.userName = controller.text;
+                                isEditing = false;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.black,
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            child: Text(
+                              "Save",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                isEditing = false;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : ElevatedButton(
+                        onPressed: onTap,
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.black,
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        child: Text(
+                          "Edit",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
               ],
             ),
-            const Divider(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Email", style: TextStyle(fontSize: 17)),
-                Text(widget.email, style: const TextStyle(fontSize: 17)),
-              ],
-            ),
+            SizedBox(height: 8),
+            isEditing
+                ? TextFormField(
+                    controller: controller,
+                    style: TextStyle(fontSize: 17),
+                  )
+                : Text(
+                    widget.userName,
+                    style: TextStyle(fontSize: 17),
+                  ),
+            SizedBox(height: 20),
           ],
         ),
       ),

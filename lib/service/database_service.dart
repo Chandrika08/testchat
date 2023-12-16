@@ -21,6 +21,15 @@ class DatabaseService {
     });
   }
 
+  Future updateUsername(String newUsername) async {
+    try {
+      await userCollection.doc(uid).update({"fullName": newUsername});
+      // You might want to update other places where the username is stored in the database
+    } catch (e) {
+      print("Error updating username: $e");
+    }
+  }
+
   // getting user data
   Future gettingUserData(String email) async {
     QuerySnapshot snapshot =
@@ -73,25 +82,13 @@ class DatabaseService {
   }
 
   // get group members
+  getGroupMembers(groupId) async {
+    return groupCollection.doc(groupId).snapshots();
+  }
 
   // search
   searchByName(String groupName) {
     return groupCollection.where("groupName", isEqualTo: groupName).get();
-  }
-
-  Future<String?> getUserEmail(String userId) async {
-    DocumentSnapshot userSnapshot = await userCollection.doc(userId).get();
-
-    if (userSnapshot.exists) {
-      return userSnapshot.get('email');
-    } else {
-      return null; // Handle the case when user data doesn't exist
-    }
-  }
-
-// Modify the getMembers function to include user emails
-  getGroupMembers(groupId) async {
-    return groupCollection.doc(groupId).snapshots();
   }
 
   Future<String?> getLastMessage(String groupId) async {
@@ -106,6 +103,16 @@ class DatabaseService {
       return messagesSnapshot.docs[0]['message'];
     } else {
       return null; // Return null if there are no messages
+    }
+  }
+
+  Future<String?> getUserEmail(String userId) async {
+    DocumentSnapshot userSnapshot = await userCollection.doc(userId).get();
+
+    if (userSnapshot.exists) {
+      return userSnapshot.get('email');
+    } else {
+      return null; // Handle the case when user data doesn't exist
     }
   }
 

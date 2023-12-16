@@ -21,6 +21,7 @@ class GroupTile extends StatefulWidget {
 
 class _GroupTileState extends State<GroupTile> {
   String? lastMessage = "";
+  late String userName1 = widget.userName;
 
   @override
   void initState() {
@@ -55,7 +56,7 @@ class _GroupTileState extends State<GroupTile> {
         child: ListTile(
           leading: CircleAvatar(
             radius: 30,
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.deepPurple,
             child: Text(
               widget.groupName.substring(0, 1).toUpperCase(),
               textAlign: TextAlign.center,
@@ -69,13 +70,7 @@ class _GroupTileState extends State<GroupTile> {
             widget.groupName,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          subtitle: Text(
-            // Display the last message or a default message if none exists
-            lastMessage != null && lastMessage!.isNotEmpty
-                ? "$widget.userName: $lastMessage"
-                : "No messages yet",
-            style: const TextStyle(fontSize: 13),
-          ),
+          subtitle: Text('Take part in the group as $userName1'),
         ),
       ),
     );

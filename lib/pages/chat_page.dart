@@ -114,7 +114,7 @@ class _ChatPageState extends State<ChatPage> {
                 Expanded(
                   child: TextFormField(
                     controller: messageController,
-                    style: const TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                       hintText: "Send a message...",
                       hintStyle: TextStyle(color: Colors.white, fontSize: 16),

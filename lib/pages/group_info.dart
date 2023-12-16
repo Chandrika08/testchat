@@ -51,7 +51,7 @@ class _GroupInfoState extends State<GroupInfo> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.purpleAccent.withOpacity(0.7),
+        backgroundColor: Colors.purple,
         title: const Text("Group Info"),
         actions: [
           IconButton(
