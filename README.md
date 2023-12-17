@@ -15,11 +15,11 @@ Below are some of the images of the app :
 
 ![signup](https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/1b6fb915-2729-4892-9277-b4e8fea64cd9)
 
-4. successfull_registered
+3. successfull_registered
 
 ![success](https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/1c7f5431-d7dd-45f8-ba79-072680010dac)
 
-3 . Home_page
+4 . Home_page
 
 ![home_page](https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/0e459464-7683-49ff-988b-9dc3743cc14d)
 
