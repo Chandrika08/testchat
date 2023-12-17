@@ -10,7 +10,7 @@ Below are some of the images of the app :
 
 1. Login_Page
 
-![login](https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/3626916d-c15e-4387-b58f-92816cb675f3|width=200) 
+![login](https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/3626916d-c15e-4387-b58f-92816cb675f3|width=900) 
 
 2. Signup_page
 
