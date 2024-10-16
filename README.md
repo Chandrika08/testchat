@@ -49,7 +49,8 @@ Welcome to **Chat Buddy** – where connections happen! This app is designed to 
 ## Screenshots
 
 ### Login Screen
-![Login Screen](https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/3626916d-c15e-4387-b58f-92816cb675f3)
+![Login Screen](<img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/3626916d-c15e-4387-b58f-92816cb675f3" alt="Login Screen" width="400"/>
+)
 
 ### Home Screen
 ![Home Screen](path_to_home_screen_image)
