@@ -2,7 +2,7 @@
 
 # Chat Buddy App
 
-![Chat Buddy](path_to_app_logo_image)
+![Chat Buddy](https://i.imgur.com/fbUHTPQ.png)
 
 Welcome to **Chat Buddy** – where connections happen! This app is designed to facilitate communication through group chats, voice, and video calls, with an emphasis on privacy, role differentiation, and user experience.
 
