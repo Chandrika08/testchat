@@ -55,8 +55,28 @@ Welcome to **Chat Buddy** – where connections happen! This app is designed to 
       <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/3626916d-c15e-4387-b58f-92816cb675f3" alt="Login Screen" width="400"/>
     </td>
     <td align="center">
+      <strong>Signup</strong><br>
+      <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/1b6fb915-2729-4892-9277-b4e8fea64cd9" alt="Signup" width="400"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Successfully Registered</strong><br>
+      <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/1c7f5431-d7dd-45f8-ba79-072680010dac" alt="Successfully Registered" width="400"/>
+    </td>
+    <td align="center">
       <strong>Home Screen</strong><br>
       <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/0e459464-7683-49ff-988b-9dc3743cc14d" alt="Home Screen" width="400"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Audio Call</strong><br>
+      <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/21e88f05-93e4-43cd-ad00-ffd1241a131a" alt="Audio Call" width="400"/>
+    </td>
+    <td align="center">
+      <strong>Video Call</strong><br>
+      <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/466e9b56-c25c-4e5e-baab-bd52becdef01" alt="Video Call" width="400"/>
     </td>
   </tr>
   <tr>
@@ -82,6 +102,7 @@ Welcome to **Chat Buddy** – where connections happen! This app is designed to 
 </table>
 
 ---
+
 
 
 ## Technology Stack
@@ -134,25 +155,6 @@ We use **Firebase Authentication** to ensure a secure login process for both stu
 
 - **Students**: Log in to access chat features and groups.
 - **Admins**: Have additional permissions to manage users and groups.
-
----
-
-## Widgets
-
-### Pre-learned Widgets:
-- **MaterialApp**
-- **Text**, **Center**, **AppBar**
-- **Container**, **Row**, **Column**
-- **ListTile**, **CircleAvatar**
-- **Bottom Navigation Bar**
-  
-### New Widgets We Learned:
-- **GestureDetector**
-- **StreamBuilder**
-- **FloatingActionButton**
-- **CircularProgressIndicator**
-- **ClipPath** (AppBarClipper)
-- **LinearGradient**
 
 ---
 
