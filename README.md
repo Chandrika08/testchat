@@ -167,14 +167,6 @@ We use **Firebase Authentication** to ensure a secure login process for both stu
 
 2. **Zego Cloud Platform**: Used for voice and video calling features. This is integrated via the Zego Cloud API and Flutter's `http` package to handle requests.
 
----
-
-## Contributors
-
-- **A. Saras Chandrika** (21BDS003)
-- **Ch. Srinivasa Sai** (21BDS012)
-- **K. Sai Kartheek Reddy** (21BDS027)
-- **R. Vinay Kumar** (21BDS056)
 
 ---
 
