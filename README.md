@@ -71,22 +71,22 @@ Welcome to **Chat Buddy** – where connections happen! This app is designed to 
   </tr>
   <tr>
     <td align="center">
-      <strong>Audio Call</strong><br>
-      <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/21e88f05-93e4-43cd-ad00-ffd1241a131a" alt="Audio Call" width="400"/>
-    </td>
-    <td align="center">
-      <strong>Video Call</strong><br>
-      <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/466e9b56-c25c-4e5e-baab-bd52becdef01" alt="Video Call" width="400"/>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
       <strong>Group Chat Screen</strong><br>
       <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/de44c93e-77d9-4c17-97f8-726ec3ec1be5" alt="Group Chat Screen" width="400"/>
     </td>
     <td align="center">
       <strong>Search Screen</strong><br>
       <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/06f0e627-563c-464f-8f6e-b59f04e188d4" alt="Search Screen" width="400"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Audio Call</strong><br>
+      <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/21e88f05-93e4-43cd-ad00-ffd1241a131a" alt="Audio Call" width="400"/>
+    </td>
+    <td align="center">
+      <strong>Video Call</strong><br>
+      <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/466e9b56-c25c-4e5e-baab-bd52becdef01" alt="Video Call" width="400"/>
     </td>
   </tr>
   <tr>
