@@ -49,24 +49,22 @@ Welcome to **Chat Buddy** – where connections happen! This app is designed to 
 ## Screenshots
 
 ### Login Screen
-![Login Screen]
-
 <img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/3626916d-c15e-4387-b58f-92816cb675f3" alt="Login Screen" width="400"/>
 
 ### Home Screen
-![Home Screen](path_to_home_screen_image)
+<img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/0e459464-7683-49ff-988b-9dc3743cc14d" alt="Login Screen" width="400"/>
 
 ### Group Chat Screen
-![Group Chat Screen](path_to_group_chat_image)
+<img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/de44c93e-77d9-4c17-97f8-726ec3ec1be5" alt="Login Screen" width="400"/>
 
 ### Search Screen
-![Search Screen](path_to_search_screen_image)
+<img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/06f0e627-563c-464f-8f6e-b59f04e188d4" alt="Login Screen" width="400"/>
 
 ### Members Screen
-![Members Screen](path_to_members_screen_image)
+<img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/260d8ec2-f67b-4915-9601-3dba0d3528f7" alt="Login Screen" width="400"/>
 
 ### Settings Screen
-![Settings Screen](path_to_settings_screen_image)
+<img src="https://github.com/Chava-Sai/Chat-Buddy/assets/129037829/374f8d6b-f1ac-48f4-b223-cfaa36deec3b" alt="Login Screen" width="400"/>
 
 ---
 
